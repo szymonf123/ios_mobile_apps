@@ -74,6 +74,9 @@ class ViewController: UIViewController {
                     present(alert, animated: true)
             }
         }
+        else if (operation == "^"){
+            label_result.text = String(pow(a, b))
+        }
     }
     @IBAction func button_dot(_ sender: Any) {
         label_result.text = (label_result.text ?? "") + "."
@@ -102,5 +105,13 @@ class ViewController: UIViewController {
         label_result.text = ""
         operation = "/"
     }
+    @IBAction func button_power(_ sender: Any) {
+        a = Float(label_result.text ?? "") ?? 0.0
+        label_result.text = ""
+        operation = "^"
+    }
+    @IBAction func button_log(_ sender: Any) {
+        a = Float(label_result.text ?? "") ?? 0.0
+        label_result.text = String(log10(a))
+    }
 }
-
