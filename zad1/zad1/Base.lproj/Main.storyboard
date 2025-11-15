@@ -167,14 +167,13 @@
                                     <action selector="button_divide:" destination="BYZ-38-t0r" eventType="touchUpInside" id="I4e-qg-BPM"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Oaj-dC-kh6">
-                                <rect key="frame" x="118" y="664" width="29" height="35"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rHl-Ct-hMp">
+                                <rect key="frame" x="116" y="664" width="29" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="."/>
                                 <connections>
-                                    <action selector="buttonC:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dwD-8f-z5r"/>
-                                    <action selector="button_point:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Hyz-bb-4eQ"/>
+                                    <action selector="button_dot:" destination="BYZ-38-t0r" eventType="touchUpInside" id="X0e-2Y-8Tn"/>
                                 </connections>
                             </button>
                         </subviews>

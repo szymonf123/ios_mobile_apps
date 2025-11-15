@@ -45,9 +45,6 @@ class ViewController: UIViewController {
     @IBAction func button8(_ sender: Any) {
         label_result.text = (label_result.text ?? "") + "8"
     }
-    @IBAction func button_point(_ sender: Any) {
-        label_result.text = (label_result.text ?? "") + "."
-    }
     @IBAction func button9(_ sender: Any) {
         label_result.text = (label_result.text ?? "") + "9"
     }
@@ -77,6 +74,9 @@ class ViewController: UIViewController {
                     present(alert, animated: true)
             }
         }
+    }
+    @IBAction func button_dot(_ sender: Any) {
+        label_result.text = (label_result.text ?? "") + "."
     }
     @IBAction func buttonC(_ sender: Any) {
         label_result.text = ""
