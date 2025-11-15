@@ -77,7 +77,9 @@ class ViewController: UIViewController {
         else if (operation == "^"){
             label_result.text = String(pow(a, b))
         }
-    }
+        else if (operation == "%"){
+            label_result.text = String(Int(a) % Int(b))
+        }    }
     @IBAction func button_dot(_ sender: Any) {
         label_result.text = (label_result.text ?? "") + "."
     }
@@ -91,9 +93,13 @@ class ViewController: UIViewController {
         operation = "+"
     }
     @IBAction func button_subtract(_ sender: Any) {
-        a = Float(label_result.text ?? "") ?? 0.0
-        label_result.text = ""
-        operation = "-"
+        if (label_result.text != ""){
+            a = Float(label_result.text ?? "") ?? 0.0
+            label_result.text = ""
+            operation = "-"
+        }
+        else {
+            label_result.text = (label_result.text ?? "") + "-"        }
     }
     @IBAction func button_multiply(_ sender: Any) {
         a = Float(label_result.text ?? "") ?? 0.0
@@ -114,4 +120,8 @@ class ViewController: UIViewController {
         a = Float(label_result.text ?? "") ?? 0.0
         label_result.text = String(log10(a))
     }
+    @IBAction func button_mod(_ sender: Any) {
+        a = Float(label_result.text ?? "") ?? 0.0
+        label_result.text = ""
+        operation = "%"    }
 }
