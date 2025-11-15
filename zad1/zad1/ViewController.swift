@@ -9,8 +9,8 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    var a: Int = 0
-    var b: Int = 0
+    var a: Float = 0.0
+    var b: Float = 0.0
     var operation: String = ""
 
     override func viewDidLoad() {
@@ -45,13 +45,37 @@ class ViewController: UIViewController {
     @IBAction func button8(_ sender: Any) {
         label_result.text = (label_result.text ?? "") + "8"
     }
+    @IBAction func button_point(_ sender: Any) {
+        label_result.text = (label_result.text ?? "") + "."
+    }
     @IBAction func button9(_ sender: Any) {
         label_result.text = (label_result.text ?? "") + "9"
     }
     @IBAction func button_eq(_ sender: Any) {
-        b = Int(label_result.text ?? "") ?? 0
+        b = Float(label_result.text ?? "") ?? 0.0
         if (operation == "+"){
             label_result.text = String(a + b)
+        }
+        else if (operation == "-"){
+            label_result.text = String(a - b)
+        }
+        else if (operation == "*"){
+            label_result.text = String(a * b)
+        }
+        else if (operation == "/"){
+            if (b != 0){
+                label_result.text = String(a / b)
+            }
+            else{
+                label_result.text = ""
+                let alert = UIAlertController(title: "Uwaga!",
+                                                  message: "Nie mozna dzielic przez 0",
+                                                  preferredStyle: .alert)
+
+                    alert.addAction(UIAlertAction(title: "OK", style: .default))
+
+                    present(alert, animated: true)
+            }
         }
     }
     @IBAction func buttonC(_ sender: Any) {
@@ -59,18 +83,24 @@ class ViewController: UIViewController {
         operation = ""
     }
     @IBAction func button_add(_ sender: Any) {
-        a = Int(label_result.text ?? "") ?? 0
+        a = Float(label_result.text ?? "") ?? 0.0
         label_result.text = ""
         operation = "+"
     }
     @IBAction func button_subtract(_ sender: Any) {
-        print("-")
+        a = Float(label_result.text ?? "") ?? 0.0
+        label_result.text = ""
+        operation = "-"
     }
     @IBAction func button_multiply(_ sender: Any) {
-        print("*")
+        a = Float(label_result.text ?? "") ?? 0.0
+        label_result.text = ""
+        operation = "*"
     }
     @IBAction func button_divide(_ sender: Any) {
-        print("/")
+        a = Float(label_result.text ?? "") ?? 0.0
+        label_result.text = ""
+        operation = "/"
     }
 }
 
