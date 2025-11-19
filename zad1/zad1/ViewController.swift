@@ -12,7 +12,7 @@ class ViewController: UIViewController {
     var a: Float = 0.0
     var b: Float = 0.0
     var operation: String = ""
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -66,12 +66,12 @@ class ViewController: UIViewController {
             else{
                 label_result.text = ""
                 let alert = UIAlertController(title: "Uwaga!",
-                                                  message: "Nie mozna dzielic przez 0",
-                                                  preferredStyle: .alert)
-
-                    alert.addAction(UIAlertAction(title: "OK", style: .default))
-
-                    present(alert, animated: true)
+                                              message: "Nie mozna dzielic przez 0",
+                                              preferredStyle: .alert)
+                
+                alert.addAction(UIAlertAction(title: "OK", style: .default))
+                
+                present(alert, animated: true)
             }
         }
         else if (operation == "^"){
@@ -123,5 +123,14 @@ class ViewController: UIViewController {
     @IBAction func button_mod(_ sender: Any) {
         a = Float(label_result.text ?? "") ?? 0.0
         label_result.text = ""
-        operation = "%"    }
+        operation = "%"
+    }
+    
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
+    }
+    
+    override var shouldAutorotate: Bool {
+        return false
+    }
 }
