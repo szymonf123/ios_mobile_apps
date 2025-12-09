@@ -29,8 +29,23 @@ Kod: zad2
 Zad 3 Lista zakupów
 
 ✅ 3.0 stworzenie modelów Produktów oraz Kategorii w Core Data
+
 ✅ 3.5 załadować dane przy uruchomieniu aplikacji (Fixtures)
+
 ✅ 4.0 stworzyć listę produktów z podstroną opisu produktu na nowym widoku (dane z core data)
+
 ✅ 4.5 opcja dodania produktu do koszyka (tabview)
+
 ✅ 5.0 dodanie więcej niż jeden produkt tego samego typu do koszyka
 
+Zad 4 Sieć
+
+3.0 pobieranie produktów oraz kategorii z aplikacji serwerowej
+
+3.5 zapis danych lokalnie (CoreData)
+
+4.0 pobieranie dodatkowo zamówień (minimum 5 pól, w tym jedna relacja)
+
+4.5 wyświetlanie produktów oraz ich kategorii na dwóch osobnych listach
+
+5.0 dodawanie produktów z poziomu aplikacji mobilnej
