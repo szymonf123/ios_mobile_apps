@@ -76,7 +76,7 @@ struct appApp: App {
                 entity.name = c.name
                 categoryMap[Int64(c.id)] = entity
             }
-            var productMap: [Int64: CartEntity] = [:]
+            var productMap: [Int64: ProductEntity] = [:]
             let products: [Product] = try await fetch(
                 url: "http://127.0.0.1:5000/products",
                 type: [Product].self
@@ -100,7 +100,7 @@ struct appApp: App {
             for o in cart {
                 let entity = CartEntity(context: context)
                 entity.id = Int64(o.id)
-                entity.quantity = o.quantity
+                entity.quantity = Int64(o.quantity)
                 entity.phone_number = o.phone_number
                 entity.address = o.address
                 if let productEntity = productMap[Int64(o.product_id)] {
