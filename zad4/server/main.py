@@ -31,7 +31,7 @@ def get_products():
     return jsonify(products)
 
 @app.route("/cart", methods=["GET"])
-def get_products():
+def get_cart():
     return jsonify(cart)
 
 @app.route("/products/<int:category_id>", methods=["GET"])
