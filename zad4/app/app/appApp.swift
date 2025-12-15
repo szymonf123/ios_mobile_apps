@@ -14,6 +14,14 @@ struct Product: Codable {
     let price: Double
 }
 
+struct Cart: Codable {
+    let id: Int
+    let quantity: Int
+    let phone_number: String
+    let address: String
+    let product_id: Int
+}
+
 func fetch<T: Decodable>(url: String, type: T.Type) async throws -> T {
     let url = URL(string: url)!
     let (data, _) = try await URLSession.shared.data(from: url)
@@ -30,9 +38,13 @@ struct appApp: App {
         let categoryRequest: NSFetchRequest<NSFetchRequestResult> = CategoryEntity.fetchRequest()
         let categoryDelete = NSBatchDeleteRequest(fetchRequest: categoryRequest)
         
+        let cartRequest: NSFetchRequest<NSFetchRequestResult> = CartEntity.fetchRequest()
+        let cartDelete = NSBatchDeleteRequest(fetchRequest: cartRequest)
+        
         do {
             try context.execute(productDelete)
             try context.execute(categoryDelete)
+            try context.execute(cartDelete)
             try context.save()
             print("Core Data wyczyszczone")
         } catch {
@@ -45,26 +57,6 @@ struct appApp: App {
     
     init() {
         context = persistenceController.container.viewContext
-    }
-    
-    func saveCategories(_ categories: [Category], context: NSManagedObjectContext) {
-        
-        
-        do {
-            try context.save()
-        } catch {
-            print("Błąd:", error)
-        }
-    }
-
-    func saveProducts(_ products: [Product], context: NSManagedObjectContext) {
-        
-        
-        do {
-            try context.save()
-        } catch {
-            print("Błąd:", error)
-        }
     }
     
     func fetchAndSaveData() async {
@@ -84,7 +76,7 @@ struct appApp: App {
                 entity.name = c.name
                 categoryMap[Int64(c.id)] = entity
             }
-            
+            var productMap: [Int64: CartEntity] = [:]
             let products: [Product] = try await fetch(
                 url: "http://127.0.0.1:5000/products",
                 type: [Product].self
@@ -95,8 +87,24 @@ struct appApp: App {
                 entity.id = Int64(p.id)
                 entity.name = p.name
                 entity.price = p.price
+                productMap[Int64(p.id)] = entity
                 if let categoryEntity = categoryMap[Int64(p.category_id)] {
                     entity.category = categoryEntity
+                }
+            }
+            
+            let cart: [Cart] = try await fetch(
+                url: "http://127.0.0.1:5000/cart",
+                type: [Cart].self
+            )
+            for o in cart {
+                let entity = CartEntity(context: context)
+                entity.id = Int64(o.id)
+                entity.quantity = o.quantity
+                entity.phone_number = o.phone_number
+                entity.address = o.address
+                if let productEntity = productMap[Int64(o.product_id)] {
+                    entity.product = productEntity
                 }
             }
             
