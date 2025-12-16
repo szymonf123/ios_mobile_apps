@@ -40,13 +40,13 @@ Zad 3 Lista zakupów
 
 Zad 4 Sieć
 
-3.0 pobieranie produktów oraz kategorii z aplikacji serwerowej
+✅ 3.0 pobieranie produktów oraz kategorii z aplikacji serwerowej
 
-3.5 zapis danych lokalnie (CoreData)
+✅ 3.5 zapis danych lokalnie (CoreData)
 
-4.0 pobieranie dodatkowo zamówień (minimum 5 pól, w tym jedna relacja)
+✅ 4.0 pobieranie dodatkowo zamówień (minimum 5 pól, w tym jedna relacja)
 
-4.5 wyświetlanie produktów oraz ich kategorii na dwóch osobnych listach
+✅ 4.5 wyświetlanie produktów oraz ich kategorii na dwóch osobnych listach
 
 5.0 dodawanie produktów z poziomu aplikacji mobilnej
 
