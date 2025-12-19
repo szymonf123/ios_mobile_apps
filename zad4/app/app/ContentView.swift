@@ -9,6 +9,11 @@ struct ContentView: View {
         animation: .default)
     private var products: FetchedResults<ProductEntity>
     
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(key: "id", ascending: true)],
+        animation: .default)
+    private var cart: FetchedResults<CartEntity>
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -31,6 +36,28 @@ struct ContentView: View {
                 }
             }
             .navigationTitle("Produkty")
+        }
+        NavigationView {
+            VStack {
+                List {
+                    ForEach(cart) { item in
+                        VStack(alignment: .leading) {
+                            HStack {
+                                Text(item.product?.name ?? "-")
+                                    .font(.headline)
+                                Spacer()
+                                Text(String(format: "%d szt.", item.quantity))
+                                    .foregroundStyle(.blue)
+                            }
+                            Text("\(item.phone_number ?? "-") | \(item.address ?? "-")")
+                                .foregroundStyle(.gray)
+                                .font(.subheadline)
+                        }
+                        .padding(.vertical, 4)
+                    }
+                }
+            }
+            .navigationTitle("Zamowienia")
         }
     }
 }
