@@ -8,3 +8,8 @@ struct LoginRequest: Codable {
 struct LoginResponse: Codable {
     let access_token: String
 }
+
+struct RegisterRequest: Codable {
+    let username: String
+    let password: String
+}

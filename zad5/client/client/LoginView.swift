@@ -5,7 +5,7 @@ struct LoginView: View {
 
     var body: some View {
         VStack(spacing: 20) {
-            Text("Logowanie")
+            Text(vm.isRegistering ? "Rejestracja" : "Logowanie")
                 .font(.largeTitle)
                 .bold()
 
@@ -17,17 +17,33 @@ struct LoginView: View {
                 .textFieldStyle(.roundedBorder)
 
             if let error = vm.errorMessage {
-                Text(error)
-                    .foregroundColor(.red)
+                Text(error).foregroundColor(.red)
             }
 
-            Button("Zaloguj się") {
+            if let info = vm.infoMessage {
+                Text(info).foregroundColor(.green)
+            }
+
+            Button(vm.isRegistering ? "Zarejestruj się" : "Zaloguj się") {
                 Task {
-                    await vm.login()
+                    if vm.isRegistering {
+                        await vm.register()
+                    } else {
+                        await vm.login()
+                    }
                 }
             }
             .buttonStyle(.borderedProminent)
+
+            Button(vm.isRegistering
+                   ? "Masz konto? Zaloguj się"
+                   : "Nie masz konta? Zarejestruj się") {
+                vm.isRegistering.toggle()
+                vm.errorMessage = nil
+                vm.infoMessage = nil
+            }
         }
         .padding()
     }
 }
+
