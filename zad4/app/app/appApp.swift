@@ -113,6 +113,10 @@ struct appApp: App {
         }
     }
     
+    func post_data_on_server() async {
+        print("TODO")
+    }
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
