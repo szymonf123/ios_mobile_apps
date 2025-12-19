@@ -32,3 +32,15 @@ def register(data: RegisterData):
     }
 
     return {"message": "Rejestracja zakończona sukcesem"}
+
+@app.post("/login")
+def login(data: LoginData):
+    user = users_db.get(data.username)
+
+    if not user:
+        raise HTTPException(status_code=401, detail="Nieprawidłowy login")
+
+    if not pwd_context.verify(data.password, user["hashed_password"]):
+        raise HTTPException(status_code=401, detail="Nieprawidłowe hasło")
+
+    return {"access_token": "FAKE_JWT_NA_RAZIE"}
