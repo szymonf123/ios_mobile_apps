@@ -70,6 +70,7 @@ def login_google(data: GoogleAuthData):
     try:
         idinfo = id_token.verify_oauth2_token(data.id_token, requests.Request(), GOOGLE_CLIENT_ID)
         userid = idinfo['sub']
-        return {"message": "Zalogowano", "user_id": userid}
+        email = idinfo.get('email', 'Unknown')
+        return {"message": "Zalogowano", "user_id": userid, "username": email}
     except ValueError:
         raise HTTPException(status_code=400, detail="Zły client_id")
