@@ -5,6 +5,16 @@ struct LoginView: View {
     @ObservedObject var vm: LoginViewModel
     
     private func signIn() {
+        guard let clientID = Bundle.main.object(
+            forInfoDictionaryKey: "GOOGLE_CLIENT_ID"
+        ) as? String else {
+            print("Brak GOOGLE_CLIENT_ID")
+            return
+        }
+
+        let config = GIDConfiguration(clientID: clientID)
+        GIDSignIn.sharedInstance.configuration = config
+        
         guard let rootVC = UIApplication.shared
             .connectedScenes
             .compactMap({ $0 as? UIWindowScene })
