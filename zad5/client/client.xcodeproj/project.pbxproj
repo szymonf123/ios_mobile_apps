@@ -6,13 +6,31 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		398B1B2D2F02935800508BCD /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 398B1B2C2F02935800508BCD /* GoogleSignIn */; };
+		398B1B2F2F02935800508BCD /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 398B1B2E2F02935800508BCD /* GoogleSignInSwift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		39F78BF62EF5CD0100B2D776 /* client.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = client.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		398B1B312F02944200508BCD /* Exceptions for "client" folder in "client" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 39F78BF52EF5CD0100B2D776 /* client */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		39F78BF82EF5CD0100B2D776 /* client */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				398B1B312F02944200508BCD /* Exceptions for "client" folder in "client" target */,
+			);
 			path = client;
 			sourceTree = "<group>";
 		};
@@ -23,6 +41,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				398B1B2D2F02935800508BCD /* GoogleSignIn in Frameworks */,
+				398B1B2F2F02935800508BCD /* GoogleSignInSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +85,8 @@
 			);
 			name = client;
 			packageProductDependencies = (
+				398B1B2C2F02935800508BCD /* GoogleSignIn */,
+				398B1B2E2F02935800508BCD /* GoogleSignInSwift */,
 			);
 			productName = client;
 			productReference = 39F78BF62EF5CD0100B2D776 /* client.app */;
@@ -94,6 +116,9 @@
 			);
 			mainGroup = 39F78BED2EF5CD0100B2D776;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				398B1B2B2F02935800508BCD /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 39F78BF72EF5CD0100B2D776 /* Products */;
 			projectDirPath = "";
@@ -254,6 +279,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"client/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = client/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -282,6 +308,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"client/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = client/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -322,6 +349,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		398B1B2B2F02935800508BCD /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		398B1B2C2F02935800508BCD /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 398B1B2B2F02935800508BCD /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		398B1B2E2F02935800508BCD /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 398B1B2B2F02935800508BCD /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 39F78BEE2EF5CD0100B2D776 /* Project object */;
 }

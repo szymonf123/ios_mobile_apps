@@ -1,7 +1,39 @@
 import SwiftUI
+import GoogleSignIn
 
 struct LoginView: View {
     @ObservedObject var vm: LoginViewModel
+    
+    private func signIn() {
+        guard let rootVC = UIApplication.shared
+            .connectedScenes
+            .compactMap({ $0 as? UIWindowScene })
+            .first?
+            .windows
+            .first?
+            .rootViewController else {
+                return
+            }
+
+        GIDSignIn.sharedInstance.signIn(
+            withPresenting: rootVC
+        ) { result, error in
+
+            if let error = error {
+                print("Google Sign-In error:", error)
+                return
+            }
+
+            guard let user = result?.user,
+                  let idToken = user.idToken?.tokenString else {
+                return
+            }
+
+            print("Google ID Token:")
+            print(idToken)
+        }
+    }
+
 
     var body: some View {
         VStack(spacing: 20) {
@@ -42,6 +74,15 @@ struct LoginView: View {
                 vm.errorMessage = nil
                 vm.infoMessage = nil
             }
+            Button {
+                signIn()
+            } label: {
+                HStack {
+                    Image(systemName: "g.circle.fill")
+                    Text("Zaloguj się przez Google")
+                }
+            }
+            .buttonStyle(.borderedProminent)
         }
         .padding()
     }
