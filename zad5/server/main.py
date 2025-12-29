@@ -66,9 +66,9 @@ def login(data: LoginData):
     return {"access_token": "FAKE_JWT_NA_RAZIE"}
 
 @app.post("/auth/google")
-def login_google(token: str):
+def login_google(data: GoogleAuthData):
     try:
-        idinfo = id_token.verify_oauth2_token(token, requests.Request(), GOOGLE_CLIENT_ID)
+        idinfo = id_token.verify_oauth2_token(data.id_token, requests.Request(), GOOGLE_CLIENT_ID)
         userid = idinfo['sub']
         return {"message": "Zalogowano", "user_id": userid}
     except ValueError:
