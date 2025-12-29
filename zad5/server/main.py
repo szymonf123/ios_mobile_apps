@@ -66,10 +66,20 @@ def login(data: LoginData):
     return {"access_token": "FAKE_JWT_NA_RAZIE"}
 
 @app.post("/auth/google")
-def login_google(token: str):
-    try:
-        idinfo = id_token.verify_oauth2_token(token, requests.Request(), GOOGLE_CLIENT_ID)
-        userid = idinfo['sub']
-        return {"message": "Zalogowano", "user_id": userid}
-    except ValueError:
-        raise HTTPException(status_code=400, detail="Zły client_id")
+def auth_google(data: GoogleAuthData):
+    response = requests.get(
+        "https://oauth2.googleapis.com/tokeninfo",
+        params={"id_token": data.id_token}
+    )
+    if response.status_code != 200:
+        raise HTTPException(status_code=401, detail="Nieprawidłowy token Google")
+    info = response.json()
+    if info.get("aud") != GOOGLE_CLIENT_ID:
+        raise HTTPException(status_code=401, detail="Zły client_id")
+    email = info.get("email")
+    if email not in users_db:
+        users_db[email] = {"username": email, "hashed_password": None, "auth_provider": "google"}
+    # Tworzenie JWT
+    payload = {"sub": email, "exp": datetime.utcnow() + timedelta(hours=1)}
+    token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
+    return {"access_token": token, "username": email, "provider": "google"}
