@@ -15,7 +15,7 @@ struct LoginView: View {
         return clientID
     }
     
-    func sendGoogleTokenToServer(idToken: String) async throws -> String {
+    func sendGoogleTokenToServer(idToken: String) async throws -> (String, String) {
         guard let url = URL(string: "http://localhost:8000/auth/google") else {
             throw URLError(.badURL)
         }
@@ -36,13 +36,14 @@ struct LoginView: View {
         }
 
         let json = try JSONSerialization.jsonObject(with: data) as? [String: Any]
-        if let accessToken = json?["access_token"] as? String {
-            return accessToken
-        } else if let detail = json?["detail"] {
-            throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "\(detail)"])
-        } else {
-            throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Nieoczekiwany format odpowiedzi"])
+        guard let userID = json?["user_id"] as? String else {
+            throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Brak user_id w odpowiedzi"])
         }
+
+        guard let username = json?["username"] as? String else {
+            throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Brak username w odpowiedzi"])
+        }
+        return (userID, username)
     }
 
 
@@ -82,9 +83,9 @@ struct LoginView: View {
 
             Task {
                 do {
-                    let token = try await sendGoogleTokenToServer(idToken: idToken)
+                    let (token, username) = try await sendGoogleTokenToServer(idToken: idToken)
                     DispatchQueue.main.async {
-                        vm.username = token
+                        vm.username = username
                         vm.isLoggedIn = true
                     }
                 } catch {
