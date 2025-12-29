@@ -1,20 +1,58 @@
 import SwiftUI
 import GoogleSignIn
+import Foundation
 
 struct LoginView: View {
     @ObservedObject var vm: LoginViewModel
     
-    private func signIn() {
-        guard let clientID = Bundle.main.object(
-            forInfoDictionaryKey: "GOOGLE_CLIENT_ID"
-        ) as? String else {
-            print("Brak GOOGLE_CLIENT_ID")
-            return
+    func getGoogleClientID() -> String? {
+        guard let path = Bundle.main.path(forResource: "Config", ofType: "plist"),
+              let dict = NSDictionary(contentsOfFile: path) as? [String: Any],
+              let clientID = dict["GOOGLE_CLIENT_ID"] as? String else {
+            print("Brak GOOGLE_CLIENT_ID w Config.plist")
+            return nil
         }
+        return clientID
+    }
+    
+    func sendGoogleTokenToServer(idToken: String) async throws -> String {
+        guard let url = URL(string: "http://localhost:8000/auth/google") else {
+            throw URLError(.badURL)
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        let body: [String: Any] = ["id_token": idToken]
+        request.httpBody = try JSONSerialization.data(withJSONObject: body)
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse,
+              (200..<300).contains(httpResponse.statusCode) else {
+            let respText = String(data: data, encoding: .utf8) ?? "Brak odpowiedzi"
+            throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: respText])
+        }
+
+        let json = try JSONSerialization.jsonObject(with: data) as? [String: Any]
+        if let accessToken = json?["access_token"] as? String {
+            return accessToken
+        } else if let detail = json?["detail"] {
+            throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "\(detail)"])
+        } else {
+            throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Nieoczekiwany format odpowiedzi"])
+        }
+    }
+
+
+    
+    private func signIn() {
+        guard let clientID = getGoogleClientID() else { return }
 
         let config = GIDConfiguration(clientID: clientID)
         GIDSignIn.sharedInstance.configuration = config
-        
+
         guard let rootVC = UIApplication.shared
             .connectedScenes
             .compactMap({ $0 as? UIWindowScene })
@@ -41,8 +79,21 @@ struct LoginView: View {
 
             print("Google ID Token:")
             print(idToken)
+
+            Task {
+                do {
+                    let token = try await sendGoogleTokenToServer(idToken: idToken)
+                    DispatchQueue.main.async {
+                        vm.username = token
+                        vm.isLoggedIn = true
+                    }
+                } catch {
+                    print("Błąd logowania do serwera:", error.localizedDescription)
+                }
+            }
         }
     }
+
 
 
     var body: some View {
