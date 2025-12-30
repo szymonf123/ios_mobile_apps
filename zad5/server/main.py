@@ -16,6 +16,9 @@ ACCESS_TOKEN_EXPIRE_HOURS = 1
 
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 
+GITHUB_CLIENT_ID = os.getenv("GITHUB_CLIENT_ID")
+GITHUB_CLIENT_SECRET = os.getenv("GITHUB_CLIENT_SECRET")
+
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 users_db = {}
@@ -31,6 +34,8 @@ class LoginData(BaseModel):
 class GoogleAuthData(BaseModel):
     id_token: str
 
+class GitHubAuthData(BaseModel):
+    code: str
 
 def create_access_token(subject: str):
     payload = {
@@ -74,3 +79,42 @@ def login_google(data: GoogleAuthData):
         return {"message": "Zalogowano", "user_id": userid, "username": email}
     except ValueError:
         raise HTTPException(status_code=400, detail="Zły client_id")
+
+@app.post("/auth/github")
+def login_github(data: GitHubAuthData):
+    token_resp = requests.post(
+        "https://github.com/login/oauth/access_token",
+        headers={"Accept": "application/json"},
+        data={
+            "client_id": GITHUB_CLIENT_ID,
+            "client_secret": GITHUB_CLIENT_SECRET,
+            "code": data.code
+        }
+    )
+
+    token_json = token_resp.json()
+    access_token = token_json.get("access_token")
+
+    if not access_token:
+        raise HTTPException(status_code=400, detail="GitHub token error")
+
+    user_resp = requests.get(
+        "https://api.github.com/user",
+        headers={"Authorization": f"Bearer {access_token}"}
+    )
+
+    user = user_resp.json()
+
+    username = user.get("login")
+    github_id = str(user.get("id"))
+
+    if not username:
+        raise HTTPException(status_code=400, detail="GitHub user error")
+
+    jwt_token = create_access_token(github_id)
+
+    return {
+        "access_token": jwt_token,
+        "username": username,
+        "provider": "github"
+    }
