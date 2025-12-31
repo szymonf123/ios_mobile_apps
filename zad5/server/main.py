@@ -92,6 +92,7 @@ async def github_login(data: GitHubCode):
         "client_id": GITHUB_CLIENT_ID,
         "client_secret": GITHUB_CLIENT_SECRET,
         "code": data.code,
+        "redirect_uri": "myapp://oauth"
     }
 
     async with httpx.AsyncClient() as client:
