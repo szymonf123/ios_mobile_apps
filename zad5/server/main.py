@@ -7,6 +7,7 @@ import requests
 import os
 from google.oauth2 import id_token
 from google.auth.transport import requests
+import httpx
 
 app = FastAPI()
 
@@ -80,41 +81,36 @@ def login_google(data: GoogleAuthData):
     except ValueError:
         raise HTTPException(status_code=400, detail="Zły client_id")
 
+class GitHubCode(BaseModel):
+    code: str
+
 @app.post("/auth/github")
-def login_github(data: GitHubAuthData):
-    token_resp = requests.post(
-        "https://github.com/login/oauth/access_token",
-        headers={"Accept": "application/json"},
-        data={
-            "client_id": GITHUB_CLIENT_ID,
-            "client_secret": GITHUB_CLIENT_SECRET,
-            "code": data.code
-        }
-    )
-
-    token_json = token_resp.json()
-    access_token = token_json.get("access_token")
-
-    if not access_token:
-        raise HTTPException(status_code=400, detail="GitHub token error")
-
-    user_resp = requests.get(
-        "https://api.github.com/user",
-        headers={"Authorization": f"Bearer {access_token}"}
-    )
-
-    user = user_resp.json()
-
-    username = user.get("login")
-    github_id = str(user.get("id"))
-
-    if not username:
-        raise HTTPException(status_code=400, detail="GitHub user error")
-
-    jwt_token = create_access_token(github_id)
-
-    return {
-        "access_token": jwt_token,
-        "username": username,
-        "provider": "github"
+async def github_login(data: GitHubCode):
+    token_url = "https://github.com/login/oauth/access_token"
+    headers = {"Accept": "application/json"}
+    payload = {
+        "client_id": GITHUB_CLIENT_ID,
+        "client_secret": GITHUB_CLIENT_SECRET,
+        "code": data.code,
     }
+
+    async with httpx.AsyncClient() as client:
+        r = await client.post(token_url, headers=headers, data=payload)
+
+    if r.status_code != 200:
+        raise HTTPException(status_code=500, detail=f"GitHub token request failed: {r.text}")
+
+    token_data = r.json()
+    access_token = token_data.get("access_token")
+    if not access_token:
+        raise HTTPException(status_code=500, detail=f"No access token returned: {token_data}")
+
+    # Pobranie danych użytkownika
+    user_url = "https://api.github.com/user"
+    async with httpx.AsyncClient() as client:
+        r_user = await client.get(user_url, headers={"Authorization": f"token {access_token}"})
+
+    user_data = r_user.json()
+    username = user_data.get("login", "Unknown")
+
+    return {"access_token": access_token, "username": username}
