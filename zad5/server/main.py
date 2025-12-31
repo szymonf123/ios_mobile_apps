@@ -98,6 +98,9 @@ async def github_login(data: GitHubCode):
     async with httpx.AsyncClient() as client:
         r = await client.post(token_url, headers=headers, data=payload)
 
+    print("Payload:", payload)
+    print("Response:", r.text)
+
     if r.status_code != 200:
         raise HTTPException(status_code=500, detail=f"GitHub token request failed: {r.text}")
 
@@ -113,8 +116,5 @@ async def github_login(data: GitHubCode):
 
     user_data = r_user.json()
     username = user_data.get("login", "Unknown")
-
-    print("Payload:", payload)
-    print("Response:", r.text)
 
     return {"access_token": access_token, "username": username}
