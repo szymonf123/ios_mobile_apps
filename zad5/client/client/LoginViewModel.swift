@@ -67,8 +67,6 @@ class LoginViewModel: ObservableObject {
         request.httpBody = try JSONEncoder().encode(body)
 
         let (data, response) = try await URLSession.shared.data(for: request)
-        // Debug
-        print("Raw server response:", String(data: data, encoding: .utf8) ?? "nil")
         return try JSONDecoder().decode(GitHubResponse.self, from: data)
     }
 
@@ -81,7 +79,6 @@ class LoginViewModel: ObservableObject {
             self.isLoggedIn = true
         } catch {
             self.errorMessage = "Błąd logowania: \(error.localizedDescription)"
-            print(error)
         }
     }
 

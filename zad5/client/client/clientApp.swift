@@ -28,7 +28,7 @@ struct clientApp: App {
             let code = components.queryItems?
                 .first(where: { $0.name == "code" })?.value
         else { return }
-        print("✅ GitHub code:", code)
+
         Task {
             await vm.loginWithGitHub(code: code)
         }
