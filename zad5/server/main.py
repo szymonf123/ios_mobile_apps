@@ -5,9 +5,12 @@ from jose import jwt
 from datetime import datetime, timedelta
 import requests
 import os
+from dotenv import load_dotenv
 from google.oauth2 import id_token
 from google.auth.transport import requests
 import httpx
+
+load_dotenv()
 
 SECRET_KEY = os.getenv("JWT_SECRET_KEY")
 ALGORITHM = "HS256"
