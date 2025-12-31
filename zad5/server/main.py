@@ -114,4 +114,7 @@ async def github_login(data: GitHubCode):
     user_data = r_user.json()
     username = user_data.get("login", "Unknown")
 
+    print("Payload:", payload)
+    print("Response:", r.text)
+
     return {"access_token": access_token, "username": username}
