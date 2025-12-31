@@ -51,4 +51,38 @@ class LoginViewModel: ObservableObject {
             errorMessage = "Błąd połączenia z serwerem"
         }
     }
+    
+    struct GitHubResponse: Codable {
+        let access_token: String
+        let username: String
+    }
+
+    func sendGitHubCodeToServer(code: String) async throws -> GitHubResponse {
+        guard let url = URL(string: "http://127.0.0.1:8000/auth/github") else { throw URLError(.badURL) }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        let body = ["code": code]
+        request.httpBody = try JSONEncoder().encode(body)
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+        // Debug
+        print("Raw server response:", String(data: data, encoding: .utf8) ?? "nil")
+        return try JSONDecoder().decode(GitHubResponse.self, from: data)
+    }
+
+    
+    @MainActor
+    func loginWithGitHub(code: String) async {
+        do {
+            let response = try await sendGitHubCodeToServer(code: code)
+            self.username = response.username
+            self.isLoggedIn = true
+        } catch {
+            self.errorMessage = "Błąd logowania: \(error.localizedDescription)"
+            print(error)
+        }
+    }
+
 }

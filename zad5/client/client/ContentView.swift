@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject private var vm = LoginViewModel()
+    @ObservedObject var vm: LoginViewModel
 
     var body: some View {
         if vm.isLoggedIn {

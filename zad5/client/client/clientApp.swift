@@ -1,24 +1,37 @@
-//
-//  clientApp.swift
-//  client
-//
-//  Created by user279406 on 12/19/25.
-//
-
 import SwiftUI
 import GoogleSignIn
 
 @main
 struct clientApp: App {
     let persistenceController = PersistenceController.shared
+    @StateObject private var vm = LoginViewModel()
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            ContentView(vm: vm)
+                .environment(\.managedObjectContext,
+                              persistenceController.container.viewContext)
                 .onOpenURL { url in
-                    GIDSignIn.sharedInstance.handle(url)
+                    if GIDSignIn.sharedInstance.handle(url) {
+                        return
+                    }
+                    handleGitHubCallback(url: url)
                 }
         }
     }
+
+    private func handleGitHubCallback(url: URL) {
+        guard
+            url.scheme == "myapp",
+            url.host == "oauth",
+            let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+            let code = components.queryItems?
+                .first(where: { $0.name == "code" })?.value
+        else { return }
+        print("✅ GitHub code:", code)
+        Task {
+            await vm.loginWithGitHub(code: code)
+        }
+    }
 }
+

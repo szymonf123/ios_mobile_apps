@@ -94,7 +94,39 @@ struct LoginView: View {
             }
         }
     }
+    
+    func getGitHubClientID() -> String? {
+        guard
+            let path = Bundle.main.path(forResource: "Config", ofType: "plist"),
+            let dict = NSDictionary(contentsOfFile: path) as? [String: Any],
+            let clientID = dict["GITHUB_CLIENT_ID"] as? String
+        else {
+            print("Brak GITHUB_CLIENT_ID w Config.plist")
+            return nil
+        }
+        return clientID
+    }
 
+
+    func signInWithGitHub() {
+        guard let clientID = getGitHubClientID() else { return }
+        let redirectURI = "myapp://oauth"
+
+        var components = URLComponents(string: "https://github.com/login/oauth/authorize")!
+        components.queryItems = [
+            URLQueryItem(name: "client_id", value: clientID),
+            URLQueryItem(name: "redirect_uri", value: redirectURI),
+            URLQueryItem(name: "scope", value: "read:user user:email")
+        ]
+
+        guard let url = components.url else {
+            print("Nie udało się zbudować URL GitHub OAuth")
+            return
+        }
+
+        print("GitHub OAuth URL:", url.absoluteString)
+        UIApplication.shared.open(url)
+    }
 
 
     var body: some View {
@@ -142,6 +174,15 @@ struct LoginView: View {
                 HStack {
                     Image(systemName: "g.circle.fill")
                     Text("Zaloguj się przez Google")
+                }
+            }
+            .buttonStyle(.borderedProminent)
+            Button {
+                signInWithGitHub()
+            } label: {
+                HStack {
+                    Image(systemName: "chevron.left.slash.chevron.right")
+                    Text("Zaloguj się przez GitHub")
                 }
             }
             .buttonStyle(.borderedProminent)
