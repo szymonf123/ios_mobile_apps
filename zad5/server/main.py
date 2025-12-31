@@ -21,9 +21,6 @@ GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 GITHUB_CLIENT_ID = os.getenv("GITHUB_CLIENT_ID")
 GITHUB_CLIENT_SECRET = os.getenv("GITHUB_CLIENT_SECRET")
 
-print("GITHUB_CLIENT_ID:", GITHUB_CLIENT_ID)
-print("GITHUB_CLIENT_SECRET:", GITHUB_CLIENT_SECRET)
-
 app = FastAPI()
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -104,9 +101,6 @@ async def github_login(data: GitHubCode):
     async with httpx.AsyncClient() as client:
         r = await client.post(token_url, headers=headers, data=payload)
 
-    print("Payload:", payload)
-    print("Response:", r.text)
-
     if r.status_code != 200:
         raise HTTPException(status_code=500, detail=f"GitHub token request failed: {r.text}")
 
@@ -115,7 +109,6 @@ async def github_login(data: GitHubCode):
     if not access_token:
         raise HTTPException(status_code=500, detail=f"No access token returned: {token_data}")
 
-    # Pobranie danych użytkownika
     user_url = "https://api.github.com/user"
     async with httpx.AsyncClient() as client:
         r_user = await client.get(user_url, headers={"Authorization": f"token {access_token}"})
