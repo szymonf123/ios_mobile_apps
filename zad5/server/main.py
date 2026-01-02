@@ -26,6 +26,8 @@ app = FastAPI()
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 users_db = {}
+google_db = set()
+github_db = set()
 
 class RegisterData(BaseModel):
     username: str
@@ -80,6 +82,7 @@ def login_google(data: GoogleAuthData):
         idinfo = id_token.verify_oauth2_token(data.id_token, requests.Request(), GOOGLE_CLIENT_ID)
         userid = idinfo['sub']
         email = idinfo.get('email', 'Unknown')
+        google_db.add(email)
         return {"message": "Zalogowano", "user_id": userid, "username": email}
     except ValueError:
         raise HTTPException(status_code=400, detail="Zły client_id")
@@ -116,4 +119,5 @@ async def github_login(data: GitHubCode):
     user_data = r_user.json()
     username = user_data.get("login", "Unknown")
 
+    github_db.add(username)
     return {"access_token": access_token, "username": username}
