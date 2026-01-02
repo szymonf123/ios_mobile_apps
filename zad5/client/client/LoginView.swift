@@ -78,9 +78,6 @@ struct LoginView: View {
                 return
             }
 
-            print("Google ID Token:")
-            print(idToken)
-
             Task {
                 do {
                     let (token, username) = try await sendGoogleTokenToServer(idToken: idToken)
@@ -101,7 +98,6 @@ struct LoginView: View {
             let dict = NSDictionary(contentsOfFile: path) as? [String: Any],
             let clientID = dict["GITHUB_CLIENT_ID"] as? String
         else {
-            print("Brak GITHUB_CLIENT_ID w Config.plist")
             return nil
         }
         return clientID
@@ -120,11 +116,9 @@ struct LoginView: View {
         ]
 
         guard let url = components.url else {
-            print("Nie udało się zbudować URL GitHub OAuth")
             return
         }
 
-        print("GitHub OAuth URL:", url.absoluteString)
         UIApplication.shared.open(url)
     }
 
