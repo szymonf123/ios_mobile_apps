@@ -87,4 +87,4 @@ Zad 7 Testy
 
 ✅ 5.0 dodać fixturki
 
-
+Kod: zad1 (3.0), zad3 (3.5-5.0)
