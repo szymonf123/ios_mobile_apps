@@ -77,14 +77,14 @@ Zad 6 Płatności
 
 Zad 7 Testy
 
-3.0 stworzyć 30 asercji testów funkcjonalnych
+✅ 3.0 stworzyć 30 asercji testów funkcjonalnych
 
-3.5 stworzyć dodatkowo 20 asercji testów jednostkowych
+✅ 3.5 stworzyć dodatkowo 20 asercji testów jednostkowych
 
-4.0 stworzyć mocki modelu produktów
+✅ 4.0 stworzyć mocki modelu produktów
 
-4.5 stworzyć mocki modelu kategorii
+✅ 4.5 stworzyć mocki modelu kategorii
 
-5.0 dodać fixturki
+✅ 5.0 dodać fixturki
 
 
