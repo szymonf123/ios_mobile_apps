@@ -6,8 +6,40 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		39B96EAF2F1BA9AE00E7D4A4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 399E8D502EBF819700F5C958 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 399E8D572EBF819700F5C958;
+			remoteInfo = zad1;
+		};
+		39B96EBC2F1BAC9E00E7D4A4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 399E8D502EBF819700F5C958 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 399E8D572EBF819700F5C958;
+			remoteInfo = zad1;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		39A9DF2A2F190AE600D5D3C1 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		399E8D582EBF819700F5C958 /* zad1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = zad1.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		39B96EAB2F1BA9AE00E7D4A4 /* zad1Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = zad1Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		39B96EB82F1BAC9E00E7D4A4 /* zad1Tests2.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = zad1Tests2.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -29,10 +61,29 @@
 			path = zad1;
 			sourceTree = "<group>";
 		};
+		39B96EB92F1BAC9E00E7D4A4 /* zad1Tests2 */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = zad1Tests2;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		399E8D552EBF819700F5C958 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		39B96EA82F1BA9AE00E7D4A4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		39B96EB52F1BAC9E00E7D4A4 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -46,6 +97,8 @@
 			isa = PBXGroup;
 			children = (
 				399E8D5A2EBF819700F5C958 /* zad1 */,
+				39B96EB92F1BAC9E00E7D4A4 /* zad1Tests2 */,
+				39A9DF262F190AE600D5D3C1 /* Frameworks */,
 				399E8D592EBF819700F5C958 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,8 +107,17 @@
 			isa = PBXGroup;
 			children = (
 				399E8D582EBF819700F5C958 /* zad1.app */,
+				39B96EAB2F1BA9AE00E7D4A4 /* zad1Tests.xctest */,
+				39B96EB82F1BAC9E00E7D4A4 /* zad1Tests2.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		39A9DF262F190AE600D5D3C1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -68,6 +130,7 @@
 				399E8D542EBF819700F5C958 /* Sources */,
 				399E8D552EBF819700F5C958 /* Frameworks */,
 				399E8D562EBF819700F5C958 /* Resources */,
+				39A9DF2A2F190AE600D5D3C1 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -83,6 +146,49 @@
 			productReference = 399E8D582EBF819700F5C958 /* zad1.app */;
 			productType = "com.apple.product-type.application";
 		};
+		39B96EAA2F1BA9AE00E7D4A4 /* zad1Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 39B96EB12F1BA9AE00E7D4A4 /* Build configuration list for PBXNativeTarget "zad1Tests" */;
+			buildPhases = (
+				39B96EA72F1BA9AE00E7D4A4 /* Sources */,
+				39B96EA82F1BA9AE00E7D4A4 /* Frameworks */,
+				39B96EA92F1BA9AE00E7D4A4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				39B96EB02F1BA9AE00E7D4A4 /* PBXTargetDependency */,
+			);
+			name = zad1Tests;
+			packageProductDependencies = (
+			);
+			productName = zad1Tests;
+			productReference = 39B96EAB2F1BA9AE00E7D4A4 /* zad1Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		39B96EB72F1BAC9E00E7D4A4 /* zad1Tests2 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 39B96EBE2F1BAC9E00E7D4A4 /* Build configuration list for PBXNativeTarget "zad1Tests2" */;
+			buildPhases = (
+				39B96EB42F1BAC9E00E7D4A4 /* Sources */,
+				39B96EB52F1BAC9E00E7D4A4 /* Frameworks */,
+				39B96EB62F1BAC9E00E7D4A4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				39B96EBD2F1BAC9E00E7D4A4 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				39B96EB92F1BAC9E00E7D4A4 /* zad1Tests2 */,
+			);
+			name = zad1Tests2;
+			packageProductDependencies = (
+			);
+			productName = zad1Tests2;
+			productReference = 39B96EB82F1BAC9E00E7D4A4 /* zad1Tests2.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -95,6 +201,14 @@
 				TargetAttributes = {
 					399E8D572EBF819700F5C958 = {
 						CreatedOnToolsVersion = 16.2;
+					};
+					39B96EAA2F1BA9AE00E7D4A4 = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 399E8D572EBF819700F5C958;
+					};
+					39B96EB72F1BAC9E00E7D4A4 = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 399E8D572EBF819700F5C958;
 					};
 				};
 			};
@@ -113,12 +227,28 @@
 			projectRoot = "";
 			targets = (
 				399E8D572EBF819700F5C958 /* zad1 */,
+				39B96EAA2F1BA9AE00E7D4A4 /* zad1Tests */,
+				39B96EB72F1BAC9E00E7D4A4 /* zad1Tests2 */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		399E8D562EBF819700F5C958 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		39B96EA92F1BA9AE00E7D4A4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		39B96EB62F1BAC9E00E7D4A4 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -135,7 +265,34 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		39B96EA72F1BA9AE00E7D4A4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		39B96EB42F1BAC9E00E7D4A4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		39B96EB02F1BA9AE00E7D4A4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 399E8D572EBF819700F5C958 /* zad1 */;
+			targetProxy = 39B96EAF2F1BA9AE00E7D4A4 /* PBXContainerItemProxy */;
+		};
+		39B96EBD2F1BAC9E00E7D4A4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 399E8D572EBF819700F5C958 /* zad1 */;
+			targetProxy = 39B96EBC2F1BAC9E00E7D4A4 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		399E8D6C2EBF819900F5C958 /* Debug */ = {
@@ -311,6 +468,74 @@
 			};
 			name = Release;
 		};
+		39B96EB22F1BA9AE00E7D4A4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = sf.zad1Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/zad1.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/zad1";
+			};
+			name = Debug;
+		};
+		39B96EB32F1BA9AE00E7D4A4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = sf.zad1Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/zad1.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/zad1";
+			};
+			name = Release;
+		};
+		39B96EBF2F1BAC9E00E7D4A4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = sf.zad1Tests2;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/zad1.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/zad1";
+			};
+			name = Debug;
+		};
+		39B96EC02F1BAC9E00E7D4A4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = sf.zad1Tests2;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/zad1.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/zad1";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -328,6 +553,24 @@
 			buildConfigurations = (
 				399E8D6C2EBF819900F5C958 /* Debug */,
 				399E8D6D2EBF819900F5C958 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		39B96EB12F1BA9AE00E7D4A4 /* Build configuration list for PBXNativeTarget "zad1Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				39B96EB22F1BA9AE00E7D4A4 /* Debug */,
+				39B96EB32F1BA9AE00E7D4A4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		39B96EBE2F1BAC9E00E7D4A4 /* Build configuration list for PBXNativeTarget "zad1Tests2" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				39B96EBF2F1BAC9E00E7D4A4 /* Debug */,
+				39B96EC02F1BAC9E00E7D4A4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
