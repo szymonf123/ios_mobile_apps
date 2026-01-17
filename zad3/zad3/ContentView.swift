@@ -10,13 +10,25 @@ import CoreData
 
 let screenHeight = UIScreen.main.bounds.height
 
+class CartManager: ObservableObject {
+    @Published var cart: [Product] = []
+    
+    func addToCart(_ product: Product) {
+        cart.append(product)
+    }
+    
+    func cartLength() -> Int {
+        return cart.count
+    }
+}
+
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var context
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Product.name, ascending: true)]
         ) private var products: FetchedResults<Product>
     
-    @State private var cart = [Product]()
+    @StateObject var cartManager = CartManager()
     
     var body: some View {
         NavigationStack {
@@ -33,17 +45,17 @@ struct ContentView: View {
                                 }
                                 Text(product.category?.name ?? "-").foregroundStyle(.gray)
                                 Button("Dodaj do koszyka") {
-                                    cart.append(product)
+                                    cartManager.addToCart(product)
                                 }
                                 .buttonStyle(.borderless)
                             }
                         }
                     }
                 }
-                if (cart.count > 0){
+                if (cartManager.cartLength() > 0){
                     Text("Koszyk")
                     List {
-                        ForEach(Array(cart)){ item in
+                        ForEach(Array(cartManager.cart)){ item in
                             Text(item.name ?? "-")
                         }
                     }
