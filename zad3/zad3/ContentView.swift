@@ -10,6 +10,44 @@ import CoreData
 
 let screenHeight = UIScreen.main.bounds.height
 
+protocol CategoryRepresentable {
+    var name_: String { get }
+}
+
+protocol ProductRepresentable {
+    var name_: String { get }
+    var price_: Double { get }
+    var descr_: String? { get }
+    var category_: CategoryRepresentable? { get }
+}
+
+extension Category: CategoryRepresentable {
+    var name_: String {
+        self.name ?? "-"
+    }
+}
+
+extension Product: ProductRepresentable {
+
+    var name_: String {
+        self.name ?? ""
+    }
+
+    var price_: Double {
+        Double(self.price)
+    }
+
+    var descr_: String? {
+        self.descr
+    }
+
+    var category_: CategoryRepresentable? {
+        self.category
+    }
+}
+
+
+
 class CartManager: ObservableObject {
     @Published var cart: [Product] = []
     

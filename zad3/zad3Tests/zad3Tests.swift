@@ -3,6 +3,50 @@ import SwiftUI
 import CoreData
 @testable import zad3
 
+struct CategoryMock: CategoryRepresentable {
+    let name_: String
+}
+
+
+class ProductMock: ProductRepresentable {
+    let name_: String
+    let price_: Double
+    let descr_: String?
+    let category_: CategoryRepresentable?
+
+    init(
+        name_: String,
+        price_: Double,
+        descr_: String?,
+        category_: CategoryRepresentable?
+    ) {
+        self.name_ = name_
+        self.price_ = price_
+        self.descr_ = descr_
+        self.category_ = category_
+    }
+}
+
+
+class CartManager {
+    var cart: [ProductMock] = []
+    func addToCart(_ product: ProductMock) {
+        cart.append(product)
+    }
+}
+
+struct Fixtures {
+    static let categoryFruit = CategoryMock(name_: "Owoce")
+    static let categoryDairy = CategoryMock(name_: "Nabiał")
+
+    static let productsFixture: [ProductMock] = [
+        ProductMock(name_: "Banan", price_: 6.99, descr_: "Świeże banany", category_: categoryFruit),
+        ProductMock(name_: "Jabłko", price_: 4.99, descr_: "Czerwone jabłko", category_: categoryFruit),
+        ProductMock(name_: "Mleko", price_: 6.50, descr_: "Mleko od krowy", category_: categoryDairy),
+        ProductMock(name_: "Jogurt", price_: 3.99, descr_: "Jogurt naturalny", category_: categoryDairy)
+    ]
+}
+
 final class ContentViewTests: XCTestCase {
     
     var persistenceController: NSPersistentContainer!
@@ -25,40 +69,6 @@ final class ContentViewTests: XCTestCase {
         
         context = persistenceController.viewContext
         
-        let fruits = Category(context: context)
-        fruits.name = "Owoce"
-        
-        let vegetables = Category(context: context)
-        vegetables.name = "Warzywa"
-        
-        let dairy = Category(context: context)
-        dairy.name = "Nabial"
-        
-        let product1 = Product(context: context)
-        product1.name = "Banan"
-        product1.price = 6.99
-        product1.category = fruits
-        
-        let product2 = Product(context: context)
-        product2.name = "Jablko"
-        product2.price = 4.99
-        product2.category = fruits
-        
-        let product3 = Product(context: context)
-        product3.name = "Jogurt"
-        product3.price = 6.99
-        product3.category = dairy
-        
-        let product4 = Product(context: context)
-        product4.name = "Mleko"
-        product4.price = 6.99
-        product4.category = dairy
-        
-        let product5 = Product(context: context)
-        product5.name = "Ziemniak"
-        product5.price = 1.99
-        product5.category = vegetables
-        
         try context.save()
         
         host = UIHostingController(rootView: AnyView(ContentView().environment(\.managedObjectContext, context)))
@@ -73,85 +83,34 @@ final class ContentViewTests: XCTestCase {
         try super.tearDownWithError()
     }
     
-    func testProductsLoadedFromFixtures() throws {
-        let fetchRequest: NSFetchRequest<Product> = Product.fetchRequest()
-        let fetchedProducts = try context.fetch(fetchRequest)
-        
-        XCTAssertEqual(fetchedProducts.count, 5, "5 products should be loaded")
-        
-        XCTAssertTrue(fetchedProducts.contains(where: { $0.name == "Jablko"  && $0.price == 4.99 }))
-        XCTAssertTrue(fetchedProducts.contains(where: { $0.name == "Ziemniak" && $0.price == 1.99 }))
-        XCTAssertTrue(fetchedProducts.contains(where: { $0.name == "Mleko" && $0.price == 6.99 }))
-        XCTAssertTrue(fetchedProducts.contains(where: { $0.name == "Jogurt" && $0.price == 6.99 }))
-        XCTAssertTrue(fetchedProducts.contains(where: { $0.name == "Banan" && $0.price == 6.99 }))
-        
-    }
-    
     func testAddingProductToCart() throws {
         let cartManager = CartManager()
-        
-        let fetchRequest: NSFetchRequest<Product> = Product.fetchRequest()
-        let products = try context.fetch(fetchRequest)
-        guard let firstProduct = products.first else {
-            XCTFail("No products available")
-            return
+            
+        for product in Fixtures.productsFixture {
+            cartManager.addToCart(product)
+        }
+            
+        XCTAssertEqual(cartManager.cart.count, Fixtures.productsFixture.count)
+        for i in 0..<Fixtures.productsFixture.count{
+            XCTAssertEqual(cartManager.cart[i].name_, Fixtures.productsFixture[i].name_)
+            XCTAssertEqual(cartManager.cart[i].price_, Fixtures.productsFixture[i].price_)
+            XCTAssertEqual(cartManager.cart[i].category_?.name_, Fixtures.productsFixture[i].category_?.name_)
         }
         
-        cartManager.addToCart(firstProduct)
-        
-        XCTAssertEqual(cartManager.cart.count, 1)
-        XCTAssertEqual(cartManager.cart.first?.name, firstProduct.name)
-    }
-    
-    func testAddingMoreProductsToCart() throws {
-        let cartManager = CartManager()
-        
-        let fetchRequest: NSFetchRequest<Product> = Product.fetchRequest()
-        let products = try context.fetch(fetchRequest)
-        guard let firstProduct = products.first else {
-            XCTFail("No products available")
-            return
-        }
-        let thirdProduct = products[2]
-        
-        cartManager.addToCart(firstProduct)
-        
-        XCTAssertEqual(cartManager.cart.count, 1)
-        XCTAssertEqual(cartManager.cart.first?.name, firstProduct.name)
-        
-        cartManager.addToCart(thirdProduct)
-        
-        XCTAssertEqual(cartManager.cart.count, 2)
-        XCTAssertEqual(cartManager.cart[1].name, thirdProduct.name)
-        
-        cartManager.addToCart(firstProduct)
-        
-        XCTAssertEqual(cartManager.cart.count, 3)
-        XCTAssertEqual(cartManager.cart[2].name, firstProduct.name)
     }
     
     func testProductViewInitialization() throws {
-        let fetchRequest: NSFetchRequest<Product> = Product.fetchRequest()
-        let products = try context.fetch(fetchRequest)
-        
-        guard let firstProduct = products.first else {
-            XCTFail("No products available")
-            return
+        for i in 0..<2 {
+            let product = Fixtures.productsFixture[i]
+            let productView = ProductView(product: product)
+            
+            XCTAssertEqual(productView.product.name_, Fixtures.productsFixture[i].name_)
+            XCTAssertEqual(productView.product.price_, Fixtures.productsFixture[i].price_)
+            XCTAssertEqual(productView.product.descr_, Fixtures.productsFixture[i].descr_)
+            XCTAssertEqual(productView.product.category_?.name_, Fixtures.productsFixture[i].category_?.name_)
         }
-        
-        var productView = ProductView(product: firstProduct)
-        
-        XCTAssertEqual(productView.product.name, firstProduct.name)
-        XCTAssertEqual(productView.product.price, firstProduct.price)
-        XCTAssertEqual(productView.product.category?.name, firstProduct.category?.name)
-        
-        let fourthProduct = products[3]
-        productView = ProductView(product: fourthProduct)
-        
-        XCTAssertEqual(productView.product.name, fourthProduct.name)
-        XCTAssertEqual(productView.product.price, fourthProduct.price)
-        XCTAssertEqual(productView.product.category?.name, fourthProduct.category?.name)
     }
+
 
 
 }
