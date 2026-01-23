@@ -5,49 +5,69 @@ struct PaymentResponse: Decodable {
     let message: String
 }
 
+struct Product: Decodable, Identifiable {
+    let id = UUID()
+    let product: String
+    let amount: Double
+}
+
 struct ContentView: View {
-    @State private var blik: String = ""
-    @State private var amount: String = ""
-    @State private var statusMessage: String = ""
-    @State private var isSuccess: Bool = false
-    @State private var isLoading: Bool = false
+    @State private var blik = ""
+    @State private var amount = ""
+    @State private var productName = ""
+
+    @State private var statusMessage = ""
+    @State private var isSuccess = false
+    @State private var isLoading = false
+
+    @State private var products: [Product] = []
 
     var body: some View {
-        VStack(spacing: 20) {
-            Text("Płatność BLIK")
-                .font(.largeTitle)
-                .bold()
+        NavigationView {
+            VStack(spacing: 16) {
 
-            TextField("Numer BLIK (6 cyfr)", text: $blik)
-                .keyboardType(.numberPad)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
+                Form {
+                    Section(header: Text("Płatność")) {
+                        TextField("Produkt", text: $productName)
+                        TextField("Numer BLIK", text: $blik)
+                            .keyboardType(.numberPad)
+                        TextField("Kwota", text: $amount)
+                            .keyboardType(.decimalPad)
 
-            TextField("Kwota", text: $amount)
-                .keyboardType(.decimalPad)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
+                        Button("Zapłać") {
+                            sendPayment()
+                        }
+                        .disabled(isLoading)
+                    }
 
-            Button {
-                sendPayment()
-            } label: {
-                if isLoading {
-                    ProgressView()
-                } else {
-                    Text("Zapłać")
-                        .frame(maxWidth: .infinity)
+                    if !statusMessage.isEmpty {
+                        Text(statusMessage)
+                            .foregroundColor(isSuccess ? .green : .red)
+                            .bold()
+                    }
+
+                    Section(header: Text("Zakupione produkty")) {
+                        if products.isEmpty {
+                            Text("Brak zakupów")
+                                .foregroundColor(.secondary)
+                        } else {
+                            ForEach(products) { product in
+                                HStack {
+                                    Text(product.product)
+                                    Spacer()
+                                    Text(String(format: "%.2f zł", product.amount))
+                                        .bold()
+                                }
+                            }
+                        }
+                    }
                 }
             }
-            .buttonStyle(.borderedProminent)
-            .disabled(isLoading)
-
-            if !statusMessage.isEmpty {
-                Text(statusMessage)
-                    .foregroundColor(isSuccess ? .green : .red)
-                    .bold()
+            .navigationTitle("BLIK Shop")
+            .onAppear {
+                fetchProducts()
             }
-
-            Spacer()
         }
-        .padding()
     }
 
     func sendPayment() {
@@ -57,13 +77,11 @@ struct ContentView: View {
             return
         }
 
-        guard let url = URL(string: "http://127.0.0.1:5000/payment") else {
-            return
-        }
-
+        let url = URL(string: "http://127.0.0.1:5000/payment")!
         let payload: [String: Any] = [
             "blik": blik,
-            "kwota": amountValue
+            "kwota": amountValue,
+            "product": productName
         ]
 
         var request = URLRequest(url: url)
@@ -73,39 +91,51 @@ struct ContentView: View {
 
         isLoading = true
 
-        URLSession.shared.dataTask(with: request) { data, response, error in
+        URLSession.shared.dataTask(with: request) { data, _, error in
             DispatchQueue.main.async {
                 isLoading = false
             }
 
-            if let error = error {
+            guard let data = data, error == nil else {
                 DispatchQueue.main.async {
-                    statusMessage = "Błąd sieci: \(error.localizedDescription)"
+                    statusMessage = "Błąd połączenia"
                     isSuccess = false
                 }
                 return
             }
 
-            guard let data = data else {
+            if let response = try? JSONDecoder().decode(PaymentResponse.self, from: data) {
                 DispatchQueue.main.async {
-                    statusMessage = "Brak danych z serwera"
-                    isSuccess = false
-                }
-                return
-            }
+                    statusMessage = response.message
+                    isSuccess = response.status == "success"
 
-            if let decoded = try? JSONDecoder().decode(PaymentResponse.self, from: data) {
-                DispatchQueue.main.async {
-                    statusMessage = decoded.message
-                    isSuccess = decoded.status == "success"
-                }
-            } else {
-                DispatchQueue.main.async {
-                    statusMessage = "Nieprawidłowa odpowiedź serwera"
-                    isSuccess = false
+                    if isSuccess {
+                        fetchProducts()
+                        clearForm()
+                    }
                 }
             }
         }.resume()
+    }
+
+    func fetchProducts() {
+        let url = URL(string: "http://127.0.0.1:5000/products")!
+
+        URLSession.shared.dataTask(with: url) { data, _, _ in
+            guard let data = data else { return }
+
+            if let decoded = try? JSONDecoder().decode([Product].self, from: data) {
+                DispatchQueue.main.async {
+                    products = decoded
+                }
+            }
+        }.resume()
+    }
+
+    func clearForm() {
+        blik = ""
+        amount = ""
+        productName = ""
     }
 }
 
