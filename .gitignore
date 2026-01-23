@@ -1,2 +1,3 @@
 *.env*
 *.plist*
+__pycache__
