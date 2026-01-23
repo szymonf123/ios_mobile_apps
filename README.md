@@ -64,11 +64,11 @@ Zad 5 Oauth
 
 Zad 6 Płatności
 
-3.0 formularz płatności oraz mockowanie przez aplikację serwerową
+✅ 3.0 formularz płatności oraz mockowanie przez aplikację serwerową
 
-3.5 model płatności lokalnie
+✅ 3.5 model płatności lokalnie
 
-4.0 lista zakupionych (opłaconych) produktów + model
+✅ 4.0 lista zakupionych (opłaconych) produktów + model
 
 4.5 wdrożenie stripe'a
 
